@@ -1,4 +1,4 @@
-package com.quantum.pro.base.utils;
+package com.jadeshop.pro.base.utils;
 
 import java.math.BigDecimal;
 

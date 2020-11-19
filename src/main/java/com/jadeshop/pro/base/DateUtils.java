@@ -1,4 +1,4 @@
-package com.quantum.pro.base;
+package com.jadeshop.pro.base;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

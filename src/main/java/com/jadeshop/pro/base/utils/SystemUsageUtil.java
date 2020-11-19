@@ -1,4 +1,4 @@
-package com.quantum.pro.base.utils;
+package com.jadeshop.pro.base.utils;
 
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;

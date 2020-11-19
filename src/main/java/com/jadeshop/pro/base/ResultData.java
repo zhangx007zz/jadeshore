@@ -1,4 +1,4 @@
-package com.quantum.pro.base;
+package com.jadeshop.pro.base;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

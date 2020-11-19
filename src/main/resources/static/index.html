@@ -1,110 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>华典大数据</title>
-	<script type="text/javascript" src="/web/js/common/vue/base.js"></script>
-  <script src="/web/js/echarts-4.2.1/dist/echarts.min.js?v=20190801"></script>
-	<style>
-  .bgImg {
-    background:url(/web/img/img.jpg)  no-repeat center center;
-    background-size:cover;
-    background-attachment:fixed;
-    background-color:#CCCCCC;
-  }
-  header{
-    font-size: 36px;
-    color: white;
-    text-align: center;
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>喜石工坊产品管理系统</title>
+    <script type="text/javascript" src="/web/js/common/vue/base.js?v=20190926"></script>
+    <style>
+    .bgImg {
+      background:url(/web/img/img.jpg)  no-repeat center center;
+      background-size:cover;
+      background-attachment:fixed;
+      background-color:#CCCCCC;
     }
-  .font{
-      font-size: 24px;
-      color: white;
-			padding: 10px;
-  }
-  .my_echart {
-    min-height: 300px;
-    height: calc(100% - 45px);
-    width: calc(100% - 40px);
-  }
-	a{
-     color:white !important;
-		 text-align:right;
-		 margin-right: calc(10%);;
-  }
-	</style>
+    .el-dialog{
+      background:url(/web/img/img.jpg)  no-repeat center center;
+      background-size:cover;
+      background-attachment:fixed;
+	  min-width:875px;
+
+    }
+    .el-dialog__title{
+        color:black;
+        font-size: 20px;
+    }
+    .el-input{
+      width: 80%;
+    }
+    .el-row {
+          color:black;
+          font-size: 12px;
+          	padding: 10px;
+          background-color: transparent;
+    }
+    .el-table, .el-table__expanded-cell {
+        background-color: transparent;
+    }
+    .el-table th, .el-table tr,.el-table td{
+          color:black;
+          font-size: 12px;
+          border: 1;
+          background-color: transparent;
+    }
+    header{
+      font-size: 36px;
+      color: black;
+      text-align: center;
+      }
+      .font{
+          font-size: 24px;
+          color: black;
+    			padding: 10px;
+      }
+	  .el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group{
+	  border-color: black; 
+	}
+	.el-table--border::after, .el-table--group::after, .el-table::before{
+	  background-color: black;
+	}
+      .el-table tbody tr:hover>td {
+        background-color:transparent !important;
+      }
+      .hove-row{
+        background-color:transparent !important;
+      }
+      .el-table tbody tr:hover>div {
+        background-color:transparent !important;
+      }
+      .avatar-uploader .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 150px;
+          height: 150px;
+          line-height: 150px;
+          text-align: center;
+        }
+        .avatar {
+          width: 150px;
+          height: 150px;
+          display: block;
+        }
+    </style>
 </head>
 <body class="bgImg">
-	<div id="app">
-    <el-container>
-        <el-header style="height:120px;"><span style="position: relative; top: 15%;">可视化数据展示</span></el-header>
-				<a  href="/writeData.html" target="_blank">数据录入</a>
-          <el-main>
-            <el-row class="font">
-              <el-col :span="6">数据库数据统计：</el-col>
-              <el-col :span="6">表数量：{{num.tableNum}}</el-col>
-              <el-col :span="6">数据数量：{{num.rowsNum}}</el-col>
-              <el-col :span="6">字段数量：{{num.columnNum}}</el-col>
-            </el-row>
-            <el-row class="font">
-              <el-col :span="6">今日统计：</el-col>
-              <el-col :span="6">读取次数：{{num.read}}</el-col>
-              <el-col :span="6">写入次数：{{num.write}}</el-col>
-            </el-row>
+    <div id="app">
+        <div>
+			<el-row :gutter="5" style="padding-top: 10px;">	
+				<el-header style="height:20px;"><span style="position: relative; top: 5%;">喜石工坊产品管理系统</span></el-header>
+				</el-row>
+               <div class="" style="padding: 8px;height:100% ; min-width:1000px; padding-left: 15px;">	
+				<el-row  :gutter="5"  type="flex" class="row-bg" style="padding-top: 30px;">				  
+				  <el-col :offset="2">
+                  <span>名称：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="query.name"> </el-input>
+                  </el-col>
+                  <el-col >
+                  <span>材料：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="query.stuff"> </el-input>
+                  </el-col>				  
+				  <el-col >
+                  <span>货主：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="query.source"> </el-input>
+                  </el-col>
+				  <el-col>
+				  <span>合作方：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="query.partner"> </el-input>
+                  </el-col> 
+				 <el-col >
+                  <span >日期 : </span>&nbsp;
+					<el-date-picker
+					  v-model="query.date"
+					  type="date"
+					  clearable
+					  value-format="yyyy-MM-dd"
+					  placeholder="选择日期">
+					</el-date-picker>
+					</el-col> 
+               </el-row>			   
+                  <el-row :gutter="5"  type="flex" class="row-bg" style="padding-top: 3px;">				  
+				  <el-col :offset="10" :span="1" style="padding: 2px; min-width:70px;"> <el-button type="warning" size="small" @click = "queryData" style="border-color: #171717;background-color: #171717 !important;">查询</el-button></el-col> 
+					<el-col :span="1" style="padding: 2px; min-width:70px;"> <el-button type="warning" size="small" @click = "clearQuery" style="border-color: #171717;background-color: #171717 !important;">重置</el-button></el-col>                   
+				   <el-col :span="1" style="padding: 2px; min-width:70px;"> <el-button type="warning" size="small" @click = "deleteData" style="border-color: #171717;background-color: #171717 !important;">删除</el-button></el-col>
+                   <el-col :span="1" style="padding: 2px; min-width:70px;"> <el-button type="warning" size="small" @click = "addData" style="border-color: #171717; background-color: #171717 !important;">新增</el-button>
+                   </el-col>
+				    <el-col :span="1" style="padding: 2px; min-width:70px;"> <el-button type="warning" size="small" @click="exportExcel" style="border-color: #171717; background-color: #171717 !important;">导出</el-button>
+                   </el-col>
+               </el-row>
+                 <el-row style="padding-top: 1px;">
+                   <el-col>
+                        <el-table border
+                      :data="tableData"
+                      size="small"
+                      class="tb-edit"
+                      style="width: 100%"
+                     @selection-change="handleSelectionChange">
+                      <el-table-column type="selection">
+                      </el-table-column>
+					  <el-table-column
+                        prop="number"
+                        label="编号"
+                        align='center'>
+                      </el-table-column>
+                       <el-table-column
+                        prop="imgurl"
+                        align='center'
+                        label="图片">
+                        <template scope="scope">
+                           <el-image v-if="scope.row.imgurl" :preview-src-list="scope.row.preview" style="width: 100px; height: 100px"  :size="100" :src="scope.row.imgurl" :key="scope.row.imgurl" >
+						   <div slot="error" class="image-slot">
+							
+							</el-image>
+						  </div>
+                        </template>
+                      </el-table-column>
+                       <el-table-column
+                        prop="name"
+                        label="名称"
+                        align='center'>
+                      </el-table-column>
+                       <el-table-column
+                        prop="stuff"
+                        label="材料"
+                        align='center'>
+                      </el-table-column>
+                      <el-table-column
+                       prop="describes"
+                       label="描述"
+                       align='center'>
+                     </el-table-column>
+                     <el-table-column
+                      prop="prime"
+                      label="成本价"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="type"
+                      label="工种"
+                       align='center'>
+                    </el-table-column>					
+					<el-table-column
+                      prop="source"
+                      label="货主"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="remark"
+                      label="备注"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="partner"
+                      label="合作方"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="date"
+                      label="日期"
+					  min-width="90px"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="status"
+                      label="状态"
+					  min-width="90px"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="primerate"
+                      label="售成比"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="disrate"
+                      label="折扣比"
+                       align='center'>
+                    </el-table-column>
+					<el-table-column
+                      prop="profitrate"
+                      label="利润比"
+                       align='center'>
+                    </el-table-column>
+                    <el-table-column
+                       label="操作"
+                       width="100"
+                        align='center'>
+                       <template slot-scope="scope">
+                         <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+                       </template>
+                     </el-table-column>
+                    </el-table>
+					<el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="query.pageNo"
+                            :page-sizes="[5, 10, 20, 40]" 
+                            :page-size="query.pageSize"         
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="totalData">   
+                    </el-pagination>
+                   </el-col>
+               </el-row>
+            </div>
+            <div>
+            <el-row><el-col>
+            <el-dialog :title="title" width='60%'  top="5vh" :visible.sync="dialogFormVisible" :close-on-click-modal='false' :close-on-press-escape='false' @close="closeDilog()">
+                  <el-row style="margin-bottom: 10px;text-align: center">
+                    <el-upload
+                        class="avatar-uploader"
+                        :action="uploadUrl(val.id)"
+                        :auto-upload = "false"
+                        :show-file-list="false"
+                        :on-success="handleSuccess"
+                        :on-error="handleError"
+                        :on-change="handleChange"
+                        ref="upload"
+                        :file-list="fileList"
+                        :on-preview="handlePictureCardPreview"
+                        :before-upload="beforeAvatarUpload">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      </el-upload>
+                </el-row>
+                <el-row >
+                  <el-col :span="8" :offset="3">
+                  <span>名  称：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.name"> </el-input>
+                  </el-col>
+                  <el-col :span="8" :offset="2">
+                  <span>材  料：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.stuff"> </el-input>
+                  </el-col>
+                </el-row>
+                <el-row>                  
+                  <el-col :span="8" :offset="3">
+                  <span>成  本：</span>
+                  <el-input  type="input"  @change="checkedNumber('prime')" placeholder="请输入数值"  v-model="val.prime"> </el-input>
+                  </el-col>
+				   <el-col :span="8" :offset="2">
+                  <span>售成比：</span>
+                    <el-input  type="input"  placeholder="请输入数值" @change="checkedNumber('primerate')" v-model="val.primerate"> </el-input>
+                  </el-col>
+                  <el-col :span="8" :offset="1">
+                </el-row>
+				<el-row >
+                  <el-col :span="8" :offset="3">
+                  <span>货  主：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.source"> </el-input>
+                  </el-col>
+                  <el-col :span="8" :offset="2">
+                  <span>合作方：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.partner"> </el-input>
+                  </el-col>
+                </el-row>
+				<el-row >  
+				 <el-col :span="8" :offset="3">
+                  <span>工  种 ： </span>&nbsp;
+                    <el-select style="" v-model="val.type" size="type"   placeholder="请选择">
+                       <el-option  key="手工" label="手工" value="手工"> </el-option>
+                       <el-option  key="机器" label="机器" value="机器"> </el-option>
+                     </el-select>
+					</el-col> 
+				<el-col :span="8" :offset="2">
+				<span >日  期 : </span>&nbsp;
+					<el-date-picker
+					  v-model="val.date"
+					  type="date"
+					  value-format="yyyy-MM-dd"
+					  placeholder="选择日期">
+					</el-date-picker>                  
+                  </el-col>               
+                </el-row>
+				<el-row >    
+			      <el-col :span="8" :offset="3">				
+                  <span>折扣比：</span>
+                    <el-input  type="input"  placeholder="请输入数值" @change="checkedNumber('disrate')" v-model="val.disrate"> </el-input>
+                  </el-col>
+				   <el-col :span="8" :offset="2">
+				  <span>利润比：</span>
+                    <el-input  type="input"  placeholder="请输入数值" @change="checkedNumber('profitrate')" v-model="val.profitrate"> </el-input>
+                  </el-col>
+                </el-row>
+				<el-row >
+				<el-col :span="8" :offset="3">
+                  <span>描  述：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.describes"> </el-input>
+                  </el-col>
+				  <el-col :span="8" :offset="2">
+                  <span>备  注：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.remark"> </el-input>
+                  </el-col>
+				  </el-row>
+				  <el-row >
+				<el-col :span="8" :offset="3">
+                  <span>状  态：</span>
+                    <el-input  type="input"  placeholder="请输入"  v-model="val.status"> </el-input>
+                  </el-col>
+				  </el-row>
+                <div slot="footer" class="dialog-footer">
+                    <el-button  @click="closeDilog()" type="warning" size="small" style="border-color: #2a67d6;background-color: rgb(1, 64, 178) !important;">取 消</el-button>
+                    <el-button type="primary" @click="saveData()" size="small" style="border-color: #2a67d6;background-color: rgb(1, 64, 178) !important;">提 交</el-button>
+                </div>
+            </el-dialog>
+            </el-col></el-row>
+            </div>
+        </div>
+    </div>
 
-
-            <el-row class="font">
-              <el-col :span="6">数据库累计操作统计：</el-col>
-              <el-col :span="6">读取次数：{{num.totalRead}}</el-col>
-              <el-col :span="6">写入次数：{{num.totalWrite}}</el-col>
-            </el-row>
-						<el-row class="font">
-              <el-col :span="6">数据库当前最新插入数据：</el-col>
-						</el-row>
-						<el-row class="font" >
-							<el-col :span="4" style="text-align: center;" >
-								 <el-avatar :size="150" :src="val.imgurl"></el-avatar>
-							</el-col>
-								<el-col :span="16"  >
-							<el-row class="font" >
-							<el-col :span="6">姓名：{{val.name}}
-							</el-col>
-							<el-col :span="12">年龄：{{val.age}}
-							</el-col>
-						</el-row>
-						<el-row class="font" >
-						<el-col :span="6">性别：{{val.sex}}
-						</el-col>
-						<el-col :span="12">地址：{{val.addr}}
-					</el-row>
-				</el-col>
-						</el-row>
-
-
-						<el-row class="font">
-							<el-col  :span="12" style="height:30px;text-align: left;line-height:30px;">硬件性能展示</el-col>
-							<el-col  :span="12" style="height:30px;text-align: left;line-height:30px;">数据库性能展示</el-col>
-						</el-row>
-            <el-row class="font">
-      					<el-col :span="6">
-      						<div id="myCharts" class="my_echart"></div>
-      					</el-col>
-								<el-col :span="6">
-      						<div id="meCharts" class="my_echart"></div>
-      					</el-col>
-								<el-col :span="12">
-                  <div id="xeCharts" class="my_echart"></div>
-      					</el-col>
-            </el-row>
-          </el-main>
-      </el-container>
-    <el-row>
-      <el-col :span="24"></el-col>
-    </el-row>
-
-			</div>
-
-	<script type="text/javascript" src="web/js/index.js"></script>
+    <script type="text/javascript" src="/web/js/writeData.js?v=20190926"></script>
 </body>
 
 </html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jadeshop.pro.dao.JadeShopDao" >
+  <sql id="BASE_TABLE">
+    t_jade_info
+  </sql>
+
+  <sql id="BASE_COLUMN">
+      CONCAT(insertdate,id) number, id,name, stuff,describes, prime, type, primerate, price, disprice, disrate, profit, fiveprofit,
+      profitrate, closeamount, source, remark, realamount, partner, date,status
+  </sql>
+  
+  <select id="selectjade" parameterType="com.jadeshop.pro.model.JadeShopDto" resultType="com.jadeshop.pro.model.JadeShopDto">
+      SELECT
+        <include refid="BASE_COLUMN"/>
+      FROM
+        <include refid="BASE_TABLE"/>
+        where 1=1 
+        <if test="name!= '' and name!= null">
+            and name like CONCAT('%',#{name},'%')
+        </if>
+         <if test="number!= '' and number!= null">
+            and CONCAT(insertdate,#{id}) like CONCAT('%',#{number},'%')
+        </if>
+        <if test="stuff != '' and stuff != null">
+            and stuff like CONCAT('%',#{stuff},'%')
+        </if>
+        <if test="source != '' and source != null">
+            and source like CONCAT('%',#{source},'%') 
+        </if>
+        <if test="partner != '' and partner != null">
+            and partner like CONCAT('%',#{partner},'%')
+        </if>
+        <if test="date != '' and date != null">
+            and date =#{date}
+        </if>
+        <if test="type != '' and type != null">
+            and type =#{type}
+        </if>
+        <if test="remark != '' and remark != null">
+            and remark =#{remark}
+        </if>
+        <if test="price >= 0 and price != null">
+            and prime <![CDATA[ >= ]]> #{price}
+        </if>
+         <if test="prime >= 0 and prime != null">
+            and prime <![CDATA[ <= ]]> #{prime}
+        </if>        
+        order by id desc 
+  </select>
+  
+    <select id="exportJade" parameterType="com.jadeshop.pro.model.JadeShopDto" resultType="com.jadeshop.pro.model.JadeShopDto">
+      SELECT
+        CONCAT(insertdate,id) number,img, name, stuff,describes, prime, type,  ROUND(prime*primerate,2) price, ROUND(prime*primerate*disrate,2) disprice,
+        ROUND(((prime*primerate*disrate)-prime)*profitrate,2) profit, ROUND(((prime*primerate*disrate)-prime)*profitrate/2,2) fiveprofit,
+        profitrate, ROUND(prime+ ((prime*primerate*disrate)-prime)*profitrate/2,2) closeamount, source, remark, realamount, partner, date
+      FROM
+        <include refid="BASE_TABLE"/>
+        where 1=1 
+        <if test="name!= '' and name!= null">
+            and name like CONCAT('%',#{name},'%')
+        </if>
+         <if test="number!= '' and number!= null">
+            and CONCAT(insertdate,#{id}) like CONCAT('%',#{number},'%')
+        </if>
+        <if test="stuff != '' and stuff != null">
+            and stuff like CONCAT('%',#{stuff},'%')
+        </if>
+        <if test="source != '' and source != null">
+            and source like CONCAT('%',#{source},'%') 
+        </if>
+        <if test="partner != '' and partner != null">
+            and partner like CONCAT('%',#{partner},'%')
+        </if>
+        <if test="remark != '' and remark != null">
+            and remark like CONCAT('%',#{remark},'%')
+        </if>
+        <if test="price >= 0 and price != null">
+            and prime <![CDATA[ >= ]]> #{price}
+        </if>
+         <if test="prime >= 0 and prime != null">
+            and prime <![CDATA[ <= ]]> #{prime}
+        </if>        
+        order by id desc 
+  </select>
+  
+  <select id="selectJadeById" resultType="com.jadeshop.pro.model.JadeShopDto">
+      SELECT
+          img
+      FROM
+        <include refid="BASE_TABLE"/>
+        where id = #{id}
+  </select>
+  
+  <insert id="insertImg" keyProperty="id" useGeneratedKeys="true" parameterType="com.jadeshop.pro.model.JadeShopDto">
+      insert into t_jade_info(img,insertdate) values(#{img},date_format(now(),'%Y%m%d'))
+  </insert>
+  
+  <update id="updateImg" parameterType="com.jadeshop.pro.model.JadeShopDto">
+      update t_jade_info set img = #{img},renewtime=now() where id = #{id}
+  </update>
+  
+  <insert id="insertJade" parameterType="com.jadeshop.pro.model.JadeShopDto">
+  	  INSERT INTO t_jade_info (id,name,stuff,describes, prime, type, primerate,   disrate, 
+      profitrate, source, remark, partner, date,renewtime,insertdate,status) VALUES (#{id},#{name},#{stuff},#{describes}, 
+      #{prime}, #{type}, #{primerate}, #{disrate},#{profitrate}, #{source}, #{remark}, #{partner}, #{date},now(),date_format(now(),'%Y%m%d'),#{status})
+  	  ON DUPLICATE KEY UPDATE stuff = #{stuff},name=#{name}, describes =  #{describes}, prime=#{prime}, type = #{type}, primerate = #{primerate}, disrate = #{disrate}, profitrate = #{profitrate}
+  	  , source = #{source}, remark = #{remark}, partner = #{partner}, date = #{date},renewtime=now(),status=#{status}
+  </insert>
+  
+  <delete id = "delJade" parameterType="com.jadeshop.pro.model.JadeShopDto">
+  	  delete from t_jade_info where 1 =1 and
+  	  <if test="id != 'ALL'">
+  	  	INSTR(concat(',',#{id},','), concat(',',id,',') )>0;
+  	  </if>
+  </delete>
+</mapper>

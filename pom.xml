@@ -8,10 +8,11 @@
 		<version>2.0.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.quantumDB</groupId>
-	<artifactId>quantumDB</artifactId>
+	<groupId>com.jadeShop</groupId>
+	<artifactId>jadeShop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>quantumDB</name>
+	<packaging>jar</packaging>
+	<name>jadeShop</name>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -85,6 +86,16 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>1.1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
 		</dependency>
 	</dependencies>
 

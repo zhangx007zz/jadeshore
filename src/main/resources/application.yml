@@ -1,8 +1,13 @@
 server:
-  port: 8080
+  port: 80
 
 
 spring:
+    servlet:
+        multipart:
+             enabled: true
+             max-file-size: 10MB # 单个文件的最大值
+             max-request-size: 100MB # 上传文件总的最大值
     datasource:
         name: quantumDB
         type: com.alibaba.druid.pool.DruidDataSource
@@ -12,9 +17,9 @@ spring:
           filters: stat
           driver-class-name: com.mysql.jdbc.Driver
           #基本属性
-          url: jdbc:mysql://49.235.76.18:3306/showdata?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+          url: jdbc:mysql://localhost:3306/jade?useUnicode=true&useSSL=false&characterEncoding=UTF-8&allowMultiQueries=true
           username: root
-          password: qwer
+          password: 123456
           #配置初始化大小/最小/最大
           initial-size: 1
           min-idle: 1

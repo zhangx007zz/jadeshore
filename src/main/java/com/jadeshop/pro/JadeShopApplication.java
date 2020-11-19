@@ -1,15 +1,15 @@
-package com.quantum.pro;
+package com.jadeshop.pro;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.quantum.pro.dao")
-public class QuantumDbApplication {
+@MapperScan("com.jadeshop.pro.dao")
+public class JadeShopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QuantumDbApplication.class, args);
+		SpringApplication.run(JadeShopApplication.class, args);
 	}
 
 }
